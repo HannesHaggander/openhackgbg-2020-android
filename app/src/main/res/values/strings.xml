@@ -2,4 +2,7 @@
     <string name="app_name">openhackgbg2020</string>
     <string name="authentication">Authentication</string>
     <string name="login">Login</string>
+    <string name="error_username_empty">Username empty</string>
+    <string name="username">Username</string>
+    <string name="cancel">Cancel</string>
 </resources>
