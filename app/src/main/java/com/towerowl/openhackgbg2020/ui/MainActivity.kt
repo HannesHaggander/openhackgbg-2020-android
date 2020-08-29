@@ -1,9 +1,10 @@
-package com.towerowl.openhackgbg2020
+package com.towerowl.openhackgbg2020.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.towerowl.openhackgbg2020.R
 
 class MainActivity : AppCompatActivity() {
 

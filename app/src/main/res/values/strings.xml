@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">openhackgbg2020</string>
+    <string name="authentication">Authentication</string>
+    <string name="login">Login</string>
 </resources>
