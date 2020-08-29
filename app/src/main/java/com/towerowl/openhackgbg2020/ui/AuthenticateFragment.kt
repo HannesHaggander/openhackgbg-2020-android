@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.towerowl.openhackgbg2020.App
 import com.towerowl.openhackgbg2020.R
 import com.towerowl.openhackgbg2020.ext.asVisibility
 import com.towerowl.openhackgbg2020.ext.invert
+import com.towerowl.openhackgbg2020.models.User
 import kotlinx.android.synthetic.main.fragment_authenticate.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -30,13 +32,18 @@ class AuthenticateFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_authenticate, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_authenticate, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupLayout()
+        lifecycleScope.launch(IO) {
+            with(App.instance().globalComponent.authenticationViewModel().getUser()) {
+                withContext(Main) {
+                    if (this@with == null) setupLayout()
+                    else findNavController().navigate(R.id.action_authenticateFragment_to_communitiesFragment)
+                }
+            }
+        }
     }
 
     private fun setupLayout() {
@@ -60,15 +67,15 @@ class AuthenticateFragment : Fragment() {
                 App.instance()
                     .globalComponent
                     .authenticationViewModel()
-                    .authenticate(username, password)
+                    .login(User(username, password))
 
                 withContext(Main) {
+                    authenticate_input_password.text?.clear()
                     loadingState(false)
                     authenticationJob = null
                 }
             }.also { authenticationJob = it }
         }
-
 
         authentication_cancel.setOnClickListener {
             authenticationJob?.cancel("User interrupted job")
