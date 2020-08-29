@@ -41,27 +41,34 @@ class AuthenticateFragment : Fragment() {
 
     private fun setupLayout() {
         authentication_login.setOnClickListener {
-            with(authenticate_input_username.text.toString()) {
-                if (isNullOrEmpty()) {
-                    authenticate_input_username.error = getString(R.string.error_username_empty)
-                    return@setOnClickListener
-                }
+            val username = authenticate_input_username.text.toString()
+            val password = authenticate_input_password.text.toString()
 
-                loadingState(true)
-
-                lifecycleScope.launch(IO) {
-                    App.instance()
-                        .globalComponent
-                        .authenticationViewModel()
-                        .authenticate(this@with)
-
-                    withContext(Main) {
-                        loadingState(false)
-                        authenticationJob = null
-                    }
-                }.also { authenticationJob = it }
+            if (username.isNullOrEmpty()) {
+                authenticate_input_username.error = getString(R.string.error_username_empty)
+                return@setOnClickListener
             }
+
+            if (password.isNullOrEmpty()) {
+                authenticate_input_password.error = getString(R.string.error_password_empty)
+                return@setOnClickListener
+            }
+
+            loadingState(true)
+
+            lifecycleScope.launch(IO) {
+                App.instance()
+                    .globalComponent
+                    .authenticationViewModel()
+                    .authenticate(username, password)
+
+                withContext(Main) {
+                    loadingState(false)
+                    authenticationJob = null
+                }
+            }.also { authenticationJob = it }
         }
+
 
         authentication_cancel.setOnClickListener {
             authenticationJob?.cancel("User interrupted job")
@@ -74,6 +81,5 @@ class AuthenticateFragment : Fragment() {
         authenticate_input_username.isEnabled = loading.invert()
         authentication_login.isEnabled = loading.invert()
         authentication_loading.visibility = loading.asVisibility()
-
     }
 }
