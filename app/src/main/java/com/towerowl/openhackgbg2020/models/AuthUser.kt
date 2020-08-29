@@ -1,13 +1,9 @@
 package com.towerowl.openhackgbg2020.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
-@Entity(tableName = "users")
 @JsonClass(generateAdapter = true)
-data class User(
-    @PrimaryKey
+data class AuthUser(
     val username: String,
-    val token: String
+    val password: String
 )

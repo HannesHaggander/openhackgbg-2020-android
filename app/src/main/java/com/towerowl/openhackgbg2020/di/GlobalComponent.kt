@@ -9,11 +9,17 @@ import com.towerowl.openhackgbg2020.repositories.ApiRepository
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Component(modules = [ViewModelsModule::class])
 interface GlobalComponent {
+    @Singleton
     fun authenticationViewModel(): AuthenticationViewModel
+
+    @Singleton
     fun communitiesViewModel(): CommunitiesViewModel
+
+    @Singleton
     fun apiCommunication(): ApiRepository
 }
 

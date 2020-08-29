@@ -11,7 +11,7 @@ import com.towerowl.openhackgbg2020.App
 import com.towerowl.openhackgbg2020.R
 import com.towerowl.openhackgbg2020.ext.asVisibility
 import com.towerowl.openhackgbg2020.ext.invert
-import com.towerowl.openhackgbg2020.models.User
+import com.towerowl.openhackgbg2020.models.AuthUser
 import kotlinx.android.synthetic.main.fragment_authenticate.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -67,7 +67,7 @@ class AuthenticateFragment : Fragment() {
                 App.instance()
                     .globalComponent
                     .authenticationViewModel()
-                    .login(User(username, password))
+                    .register(AuthUser(username, password))
 
                 withContext(Main) {
                     authenticate_input_password.text?.clear()

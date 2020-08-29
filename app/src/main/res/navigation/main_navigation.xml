@@ -15,5 +15,13 @@
     <fragment
         android:id="@+id/communitiesFragment"
         android:name="com.towerowl.openhackgbg2020.ui.CommunitiesFragment"
-        android:label="CommunitiesFragment" />
+        android:label="CommunitiesFragment">
+        <action
+            android:id="@+id/action_communitiesFragment_to_itemsFragment"
+            app:destination="@id/itemsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemsFragment"
+        android:name="com.towerowl.openhackgbg2020.ui.SharedItemsFragment"
+        android:label="ItemsFragment" />
 </navigation>

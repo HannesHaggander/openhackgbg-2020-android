@@ -20,21 +20,32 @@ class AuthenticationViewModel(
     private val mCurrentUser = MutableLiveData<User?>()
     val currentUser: LiveData<User?> get() = mCurrentUser
 
-    suspend fun login(user: User) {
-        apiRepository.authentication.login(user).enqueue(
-            onResponse = { _, r ->
+    fun register(authUser: AuthUser) {
+        apiRepository.authentication.register(authUser).enqueue(onResponse = { c, r ->
+            if (!r.isSuccessful) {
+                Log.w(TAG, "login: Failed", Exception(r.errorBody()?.string().orEmpty()))
+                return@enqueue
+            }
+
+            login(authUser)
+        }, onFailure = { c, err ->
+            Log.e(TAG, "login: Failed", Exception(err.cause))
+        })
+    }
+
+    fun login(authUser: AuthUser) {
+        apiRepository.authentication.login(authUser).enqueue(
+            onResponse = { c, r ->
                 if (!r.isSuccessful) {
+                    Log.w(TAG, "login: ")
                     return@enqueue
                 }
 
-                r.body()?.run {
-                    mCurrentUser.postValue(this)
-                }
+                mCurrentUser.postValue(r.body())
             },
-            onFailure = { _, err ->
-                Log.w(TAG, "login: Failed to login", Exception(err))
-            }
-        )
+            onFailure = { c, err ->
+                Log.e(TAG, "login: Failed", java.lang.Exception(err.cause))
+            })
     }
 
     suspend fun logout() {
