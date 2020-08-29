@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/authenticateFragment">
+
+    <fragment
+        android:id="@+id/authenticateFragment"
+        android:name="com.towerowl.openhackgbg2020.ui.AuthenticateFragment"
+        android:label="AuthenticateFragment">
+        <action
+            android:id="@+id/action_authenticateFragment_to_communitiesFragment"
+            app:destination="@id/communitiesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/communitiesFragment"
+        android:name="com.towerowl.openhackgbg2020.ui.CommunitiesFragment"
+        android:label="CommunitiesFragment" />
+</navigation>
