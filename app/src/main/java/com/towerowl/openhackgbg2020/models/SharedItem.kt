@@ -1,6 +1,7 @@
 package com.towerowl.openhackgbg2020.models
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -8,7 +9,9 @@ import java.util.*
 data class SharedItem(
     val id: UUID,
     val name: String,
-    var available: Int
+    var available: Int,
+    @DrawableRes
+    var imageResId: Int
 ) : Parcelable {
     fun isAvailable(): Boolean = available > 0
 

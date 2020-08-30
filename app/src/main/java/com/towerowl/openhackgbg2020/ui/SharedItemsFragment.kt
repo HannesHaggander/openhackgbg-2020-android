@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.towerowl.openhackgbg2020.App
 import com.towerowl.openhackgbg2020.R
 import com.towerowl.openhackgbg2020.models.Community
@@ -100,6 +101,7 @@ class SharedItemsFragment : Fragment() {
                     if (item.isAvailable()) R.string.claim
                     else R.string.unavailable
                 )
+                Glide.with(this).load(item.imageResId).into(vh_shared_item_image)
                 vh_shared_item_claim.setOnClickListener { onClick(position, item) }
                 vh_shared_item_text.text = item.name
             }
