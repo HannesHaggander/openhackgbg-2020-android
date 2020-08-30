@@ -10,7 +10,10 @@
         android:label="AuthenticateFragment">
         <action
             android:id="@+id/action_authenticateFragment_to_communitiesFragment"
-            app:destination="@id/communitiesFragment" />
+            app:destination="@id/communitiesFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/main_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/communitiesFragment"

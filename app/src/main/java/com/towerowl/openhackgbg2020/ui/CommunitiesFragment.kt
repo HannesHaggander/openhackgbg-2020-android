@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.towerowl.openhackgbg2020.App
@@ -15,7 +16,15 @@ import kotlinx.android.synthetic.main.view_holder_community_item.view.*
 
 class CommunitiesFragment : Fragment() {
 
-    private val communityAdapter by lazy { CommunityAdapter() }
+    private val communityAdapter by lazy {
+        CommunityAdapter { clicked ->
+            findNavController().navigate(
+                R.id.action_communitiesFragment_to_itemsFragment, Bundle().apply {
+                    putParcelable(Community::class.java.simpleName, clicked)
+                }
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +61,8 @@ class CommunitiesFragment : Fragment() {
         }
     }
 
-    private class CommunityAdapter() : RecyclerView.Adapter<CommunityViewHolder>() {
+    private class CommunityAdapter(private val onClick: (Community) -> Unit) :
+        RecyclerView.Adapter<CommunityViewHolder>() {
         var data: List<Community> = listOf()
             set(value) {
                 field = value
@@ -69,6 +79,7 @@ class CommunitiesFragment : Fragment() {
             val item = data[position]
             with(holder.itemView) {
                 vh_community_title.text = item.name
+                vh_community_join.setOnClickListener { onClick(item) }
             }
         }
 

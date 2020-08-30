@@ -8,4 +8,6 @@
     <string name="password">Password</string>
     <string name="error_password_empty">Password empty</string>
     <string name="join">Join</string>
+    <string name="claim">Claim</string>
+    <string name="unavailable">Unavailable</string>
 </resources>

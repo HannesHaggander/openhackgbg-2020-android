@@ -5,6 +5,7 @@ import com.towerowl.openhackgbg2020.data.AppDatabase
 import com.towerowl.openhackgbg2020.data.AuthenticationDao
 import com.towerowl.openhackgbg2020.models.AuthenticationViewModel
 import com.towerowl.openhackgbg2020.models.CommunitiesViewModel
+import com.towerowl.openhackgbg2020.models.SharedItemsViewModel
 import com.towerowl.openhackgbg2020.repositories.ApiRepository
 import dagger.Component
 import dagger.Module
@@ -18,6 +19,9 @@ interface GlobalComponent {
 
     @Singleton
     fun communitiesViewModel(): CommunitiesViewModel
+
+    @Singleton
+    fun sharedItemsViewModel(): SharedItemsViewModel
 
     @Singleton
     fun apiCommunication(): ApiRepository
@@ -66,5 +70,12 @@ class ViewModelsModule {
     fun provideCommunitiesViewModel(apiRepository: ApiRepository): CommunitiesViewModel =
         communitiesViewModel ?: CommunitiesViewModel(apiRepository)
             .also { communitiesViewModel = it }
+
+    private var sharedItemsViewModel: SharedItemsViewModel? = null
+
+    @Provides
+    fun provideSharedItemsViewModel(apiRepository: ApiRepository): SharedItemsViewModel =
+        sharedItemsViewModel ?: SharedItemsViewModel(apiRepository)
+            .also { sharedItemsViewModel = it }
 
 }

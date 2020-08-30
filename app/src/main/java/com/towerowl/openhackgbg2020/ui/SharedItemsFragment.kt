@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.towerowl.openhackgbg2020.App
 import com.towerowl.openhackgbg2020.R
+import com.towerowl.openhackgbg2020.models.Community
 import com.towerowl.openhackgbg2020.models.SharedItem
 import kotlinx.android.synthetic.main.fragment_shared_items.*
-import kotlinx.android.synthetic.main.view_holder_community_item.view.*
 import kotlinx.android.synthetic.main.view_holder_shared_item_item.view.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SharedItemsFragment : Fragment() {
 
@@ -29,7 +34,7 @@ class SharedItemsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycler()
-        getArgumentSharedItems()
+        getSharedItems()
     }
 
     private fun setupRecycler() {
@@ -46,20 +51,24 @@ class SharedItemsFragment : Fragment() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
         }
     }
 
-    private fun getArgumentSharedItems() {
-        arguments?.getParcelableArrayList<SharedItem>(SharedItem::claim.javaClass.simpleName)
-            ?.toMutableList()
-            ?.run { sharedItemsAdapter.data = this }
-            ?: throw Exception("Missing shared items in argument")
+    private fun getSharedItems() {
+        arguments?.getParcelable<Community>(Community::class.java.simpleName)?.run {
+            lifecycleScope.launch(IO) {
+                App.instance()
+                    .globalComponent
+                    .sharedItemsViewModel()
+                    .getItemsForCommunity(this@run)
+                    .let { items ->
+                        withContext(Main) {
+                            sharedItemsAdapter.data = items.toMutableList()
+                        }
+                    }
+            }
+
+        }
 
 //        sharedItemsAdapter.data = mutableListOf(
 //            SharedItem(UUID.randomUUID(), "Impact drill", 1),
@@ -86,9 +95,13 @@ class SharedItemsFragment : Fragment() {
         override fun onBindViewHolder(holder: SharedItemsViewHolder, position: Int) {
             val item = data[position]
             with(holder.itemView) {
-                vh_community_join.isEnabled = item.isAvailable()
+                vh_shared_item_claim.isEnabled = item.isAvailable()
+                vh_shared_item_claim.text = context.getString(
+                    if (item.isAvailable()) R.string.claim
+                    else R.string.unavailable
+                )
+                vh_shared_item_claim.setOnClickListener { onClick(position, item) }
                 vh_shared_item_text.text = item.name
-                setOnClickListener { onClick(position, item) }
             }
         }
 

@@ -9,7 +9,7 @@ import com.towerowl.openhackgbg2020.R
 
 class MainActivity : AppCompatActivity() {
 
-    private val navController: NavController by lazy { findNavController(R.id.main_navigation) }
+    private val navController: NavController by lazy { findNavController(R.id.main_nav) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.authenticateFragment)
                 }
             }
+    }
+
+    override fun onBackPressed() {
+        if (!navController.navigateUp()) {
+            super.onBackPressed()
+        }
     }
 
 }
