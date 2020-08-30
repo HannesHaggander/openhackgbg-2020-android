@@ -68,10 +68,13 @@ class AuthenticateFragment : Fragment() {
                     .globalComponent
                     .authenticationViewModel()
                     .login(AuthUser(username, password))
-                    .also { findNavController().navigate(R.id.action_authenticateFragment_to_communitiesFragment) }
+                    .also {
+                        findNavController().navigate(R.id.action_authenticateFragment_to_communitiesFragment)
+                        return@launch
+                    }
 
                 withContext(Main) {
-                    authenticate_input_password.text?.clear()
+                    authenticate_input_password?.text?.clear()
                     loadingState(false)
                     authenticationJob = null
                 }
