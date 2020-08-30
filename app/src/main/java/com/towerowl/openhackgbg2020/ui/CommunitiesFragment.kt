@@ -36,7 +36,8 @@ class CommunitiesFragment : Fragment() {
             communities.observe(viewLifecycleOwner) { communities ->
                 communityAdapter.data = communities
             }
-            updateCommunities()
+            //updateCommunities()
+            mockCommunities()
         }
     }
 

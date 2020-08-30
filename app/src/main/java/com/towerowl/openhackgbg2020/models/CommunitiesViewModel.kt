@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.util.*
 
 class CommunitiesViewModel(private val apiRepository: ApiRepository) : ViewModel() {
 
@@ -40,6 +41,14 @@ class CommunitiesViewModel(private val apiRepository: ApiRepository) : ViewModel
                 Log.w(TAG, "updateCommunities: ", Exception(err))
             })
         }.also { updateCommunityJob = it }
+    }
 
+    fun mockCommunities() {
+        mCommunities.postValue(
+            listOf(
+                Community(UUID.randomUUID(), "Housing association Blomman"),
+                Community(UUID.randomUUID(), "Boating club Styrman")
+            )
+        )
     }
 }

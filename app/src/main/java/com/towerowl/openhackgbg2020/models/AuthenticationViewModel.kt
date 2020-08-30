@@ -34,18 +34,23 @@ class AuthenticationViewModel(
     }
 
     fun login(authUser: AuthUser) {
-        apiRepository.authentication.login(authUser).enqueue(
-            onResponse = { c, r ->
-                if (!r.isSuccessful) {
-                    Log.w(TAG, "login: ")
-                    return@enqueue
-                }
+        with(User(authUser.username, "1902837ajikshd9132y4")) {
+            authenticationDao.insertUser(this)
+            mCurrentUser.postValue(this)
+        }
 
-                mCurrentUser.postValue(r.body())
-            },
-            onFailure = { c, err ->
-                Log.e(TAG, "login: Failed", java.lang.Exception(err.cause))
-            })
+//        apiRepository.authentication.login(authUser).enqueue(
+//            onResponse = { c, r ->
+//                if (!r.isSuccessful) {
+//                    Log.w(TAG, "login: ")
+//                    return@enqueue
+//                }
+//
+//                mCurrentUser.postValue(r.body())
+//            },
+//            onFailure = { c, err ->
+//                Log.e(TAG, "login: Failed", java.lang.Exception(err.cause))
+//            })
     }
 
     suspend fun logout() {
